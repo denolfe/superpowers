@@ -11,34 +11,19 @@ description: Use when you have a written implementation plan to execute in a sep
 
 ## Overview
 
-Load plan, review critically, execute all tasks, report when complete.
+Load plan, review critically, execute tasks in batches, report for review between batches.
+
+**Core principle:** Batch execution with checkpoints for architect review.
 
 **Announce at start:** "I'm using the executing-plans skill to implement this plan."
 
-**Note:** Tell your human partner that Superpowers works much better with access to subagents. The quality of its work will be significantly higher if run on a platform with subagent support (such as Claude Code or Codex). If subagents are available, use superpowers-extended-cc:subagent-driven-development instead of this skill.
-
 ## The Process
 
-### Step 0: Load Persisted Tasks
-
-1. Call `TaskList` to check for existing native tasks
-2. **CRITICAL - Locate tasks file:** Try `<plan-path>.tasks.json`, if not found glob for matching `.tasks.json`
-3. If tasks file exists AND native tasks empty: recreate from JSON using TaskCreate:
-   - Include full `description` from .tasks.json (not just subject)
-   - Include `metadata` field if present (files, verifyCommand, acceptanceCriteria)
-   - Restore `blockedBy` with TaskUpdate
-4. If native tasks exist: verify they match plan, resume from first `pending`/`in_progress`
-5. If neither: proceed to Step 1b to bootstrap from plan
-
-Update `.tasks.json` after every task status change.
-
-### Step 0.5: Verify Workspace (Worktree Check)
-
-Before calling `using-git-worktrees`, check if a worktree already exists:
-
-1. Run `git worktree list` to see all existing worktrees
-2. If a worktree for the plan's branch already exists: **cd into it — do NOT create a new one**
-3. If on main/master with no worktree: **REQUIRED SUB-SKILL:** Use `superpowers-extended-cc:using-git-worktrees` to create one
+### Step 0: Check for Resume
+If `3-PLAN.md` has a "Current Status" section:
+1. Read the status to understand where to continue
+2. Skip completed tasks (marked `[x]`)
+3. Resume from the task indicated in "Next action"
 
 ### Step 1: Load and Review Plan
 1. Read plan file
@@ -61,16 +46,34 @@ If TaskList returned no tasks or tasks don't match plan:
 4. Call `TaskList` and verify blockedBy relationships show correctly (e.g., "blocked by #1, #2")
 
 
-### Step 2: Execute Tasks
+### Step 2: Execute Batch
+**Default: First 3 tasks**
 
 For each task:
 1. Mark as in_progress
 2. Follow each step exactly (plan has bite-sized steps)
 3. **Use metadata for verification:** Parse the `json:metadata` code fence from the task description. Run `verifyCommand` and check each `acceptanceCriteria` before marking complete.
 4. Mark as completed
-5. **Sync `.tasks.json`:** Read the tasks file, update the task's `"status"` to `"completed"` (or `"in_progress"` in step 1), set `"lastUpdated"` to current ISO timestamp, write back. This keeps the persistence file in sync with native tasks for cross-session resume.
+5. Update task checkbox: `### [ ] Task N` → `### [x] Task N`
+6. Update "Current Status" section with progress and next action
 
-### Step 3: Complete Development
+### Step 3: Report
+When batch complete:
+- Show what was implemented
+- Show verification output
+- Say: "Ready for feedback."
+
+**On pause or session end:**
+- Update "Current Status" with current progress and next action
+- This enables seamless resume in future sessions
+
+### Step 4: Continue
+Based on feedback:
+- Apply changes if needed
+- Execute next batch
+- Repeat until complete
+
+### Step 5: Complete Development
 
 After all tasks complete and verified:
 - Announce: "I'm using the finishing-a-development-branch skill to complete this work."
@@ -80,7 +83,7 @@ After all tasks complete and verified:
 ## When to Stop and Ask for Help
 
 **STOP executing immediately when:**
-- Hit a blocker (missing dependency, test fails, instruction unclear)
+- Hit a blocker mid-batch (missing dependency, test fails, instruction unclear)
 - Plan has critical gaps preventing starting
 - You don't understand an instruction
 - Verification fails repeatedly
@@ -100,6 +103,7 @@ After all tasks complete and verified:
 - Follow plan steps exactly
 - Don't skip verifications
 - Reference skills when plan says to
+- Between batches: just report and wait
 - Stop when blocked, don't guess
 - Never start implementation on main/master branch without explicit user consent
 
