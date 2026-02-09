@@ -15,6 +15,12 @@ Load plan, review critically, execute tasks in batches, report for review betwee
 
 ## The Process
 
+### Step 0: Check for Resume
+If `3-PLAN.md` has a "Current Status" section:
+1. Read the status to understand where to continue
+2. Skip completed tasks (marked `[x]`)
+3. Resume from the task indicated in "Next action"
+
 ### Step 1: Load and Review Plan
 1. Read plan file
 2. Review critically - identify any questions or concerns about the plan
@@ -29,12 +35,18 @@ For each task:
 2. Follow each step exactly (plan has bite-sized steps)
 3. Run verifications as specified
 4. Mark as completed
+5. Update task checkbox: `### [ ] Task N` → `### [x] Task N`
+6. Update "Current Status" section with progress and next action
 
 ### Step 3: Report
 When batch complete:
 - Show what was implemented
 - Show verification output
 - Say: "Ready for feedback."
+
+**On pause or session end:**
+- Update "Current Status" with current progress and next action
+- This enables seamless resume in future sessions
 
 ### Step 4: Continue
 Based on feedback:

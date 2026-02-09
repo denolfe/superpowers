@@ -15,7 +15,7 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 **Context:** This should be run in a dedicated worktree (created by brainstorming skill).
 
-**Save plans to:** `docs/plans/YYYY-MM-DD-<feature-name>.md`
+**Save plans to:** `3-PLAN.md` in the current task folder (read from `2-DESIGN.md` in same folder)
 
 ## Bite-Sized Task Granularity
 
@@ -27,6 +27,15 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 - "Commit" - step
 
 ## Plan Document Header
+
+**Every plan MUST include a Current Status section immediately after the header:**
+
+```markdown
+## Current Status
+**Last updated:** [timestamp]
+**Progress:** [none yet | Tasks 1-N complete, Task X in progress]
+**Next action:** [first task to execute]
+```
 
 **Every plan MUST start with this header:**
 
@@ -47,7 +56,7 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 ## Task Structure
 
 ```markdown
-### Task N: [Component Name]
+### [ ] Task N: [Component Name]
 
 **Files:**
 - Create: `exact/path/to/file.py`
@@ -96,21 +105,11 @@ git commit -m "feat: add specific feature"
 
 ## Execution Handoff
 
-After saving the plan, offer execution choice:
+After saving the plan:
 
-**"Plan complete and saved to `docs/plans/<filename>.md`. Two execution options:**
+**Announce**: "Plan complete and saved to `3-PLAN.md`. Ready to execute?
 
-**1. Subagent-Driven (this session)** - I dispatch fresh subagent per task, review between tasks, fast iteration
-
-**2. Parallel Session (separate)** - Open new session with executing-plans, batch execution with checkpoints
-
-**Which approach?"**
-
-**If Subagent-Driven chosen:**
+If yes:
 - **REQUIRED SUB-SKILL:** Use superpowers:subagent-driven-development
 - Stay in this session
 - Fresh subagent per task + code review
-
-**If Parallel Session chosen:**
-- Guide them to open new session in worktree
-- **REQUIRED SUB-SKILL:** New session uses superpowers:executing-plans

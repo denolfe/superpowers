@@ -19,6 +19,10 @@ Start by understanding the current project context, then ask questions one at a 
 - Prefer multiple choice questions when possible, but open-ended is fine too
 - Only one question per message - if a topic needs more exploration, break it into multiple questions
 - Focus on understanding: purpose, constraints, success criteria
+- When a question requires codebase context: pause and announce "Let me investigate [specific area]..."
+- Spawn targeted Explore agent for that area
+- Incorporate findings into the conversation before continuing
+- Do not ask questions that could be answered by reading the codebase
 
 **Exploring approaches:**
 - Propose 2-3 different approaches with trade-offs
@@ -35,9 +39,21 @@ Start by understanding the current project context, then ask questions one at a 
 ## After the Design
 
 **Documentation:**
-- Write the validated design to `docs/plans/YYYY-MM-DD-<topic>-design.md`
-- Use elements-of-style:writing-clearly-and-concisely skill if available
-- Commit the design document to git
+- Write to `2-DESIGN.md` in the current task folder (e.g., `~/.claude/plans/{YYYY-MM-DD}_{project}_{task}/`)
+- If `2-DESIGN.md` exists: augment existing content if coherent with new design, else append as a dated section
+- When presenting design sections, state how many total sections there are (e.g., "Section 2 of 5")
+- Append clarifying questions log to end of file:
+  ```markdown
+  ## Clarifying Questions Asked During Brainstorming
+
+  1. **Q: [Question text]?**
+     **A:** [User's answer or "No answer provided."]
+
+     Other Options Considered:
+     - [Option 1]
+     - [Option 2]
+  ```
+- Do NOT commit if plan folder is outside project repository
 
 **Implementation (if continuing):**
 - Ask: "Ready to set up for implementation?"
