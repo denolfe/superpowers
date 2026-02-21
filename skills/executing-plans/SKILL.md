@@ -19,14 +19,18 @@ Load plan, review critically, execute tasks in batches, report for review betwee
 
 ## The Process
 
-### Step 0: Check for Resume
-If `3-PLAN.md` has a "Current Status" section:
-1. Read the status to understand where to continue
-2. Skip completed tasks (marked `[x]`)
-3. Resume from the task indicated in "Next action"
+### Step 0: Load Persisted Tasks
+
+1. Call `TaskList` to check for existing native tasks
+2. **CRITICAL - Locate tasks file:** Try `<plan-path>.tasks.json`, if not found glob for matching `.tasks.json`
+3. If tasks file exists AND native tasks empty: recreate from JSON using TaskCreate, restore blockedBy with TaskUpdate
+4. If native tasks exist: verify they match plan, resume from first `pending`/`in_progress`
+5. If neither: proceed to Step 1b to bootstrap from plan
+
+Update `.tasks.json` after every task status change.
 
 ### Step 1: Load and Review Plan
-1. Read plan file
+1. Read plan file fully
 2. Review critically - identify any questions or concerns about the plan
 3. If concerns: Raise them with your human partner before starting
 4. If no concerns: Proceed to task setup
@@ -38,13 +42,12 @@ If TaskList returned no tasks or tasks don't match plan:
 1. Parse the plan document for `## Task N:` or `### Task N:` headers
 2. For each task found, use TaskCreate with:
    - subject: The task title from the plan
-   - description: Full structured content (Goal, Files, Acceptance Criteria, Verify, Steps) with `json:metadata` code fence at the end containing files, verifyCommand, acceptanceCriteria
+   - description: Full task content including steps, files, acceptance criteria
    - activeForm: Present tense action (e.g., "Implementing X")
 3. **CRITICAL - Dependencies:** For EACH task that has blockedBy in the plan or .tasks.json:
    - Call `TaskUpdate` with `taskId` and `addBlockedBy: [list-of-blocking-task-ids]`
    - Do NOT skip this step - dependencies are essential for correct execution order
 4. Call `TaskList` and verify blockedBy relationships show correctly (e.g., "blocked by #1, #2")
-
 
 ### Step 2: Execute Batch
 **Default: First 3 tasks**
@@ -54,18 +57,12 @@ For each task:
 2. Follow each step exactly (plan has bite-sized steps)
 3. **Use metadata for verification:** Parse the `json:metadata` code fence from the task description. Run `verifyCommand` and check each `acceptanceCriteria` before marking complete.
 4. Mark as completed
-5. Update task checkbox: `### [ ] Task N` → `### [x] Task N`
-6. Update "Current Status" section with progress and next action
 
 ### Step 3: Report
 When batch complete:
 - Show what was implemented
 - Show verification output
 - Say: "Ready for feedback."
-
-**On pause or session end:**
-- Update "Current Status" with current progress and next action
-- This enables seamless resume in future sessions
 
 ### Step 4: Continue
 Based on feedback:

@@ -50,15 +50,6 @@ Key principle: TDD cycles happen WITHIN tasks, not as separate tasks. A task is 
 
 ## Plan Document Header
 
-**Every plan MUST include a Current Status section immediately after the header:**
-
-```markdown
-## Current Status
-**Last updated:** [timestamp]
-**Progress:** [none yet | Tasks 1-N complete, Task X in progress]
-**Next action:** [first task to execute]
-```
-
 **Every plan MUST start with this header:**
 
 ```markdown
@@ -77,8 +68,8 @@ Key principle: TDD cycles happen WITHIN tasks, not as separate tasks. A task is 
 
 ## Task Structure
 
-```markdown
-### [ ] Task N: [Component Name]
+````markdown
+### Task N: [Component Name]
 
 **Goal:** [One sentence — what this task produces]
 
@@ -118,7 +109,7 @@ Expected: PASS
 git add tests/path/test.py src/path/file.py
 git commit -m "feat: add specific feature"
 ```
-```
+````
 
 ## No Placeholders
 
@@ -138,11 +129,105 @@ Every step must contain the actual content an engineer needs. These are **plan f
 
 ## Execution Handoff
 
-After saving the plan:
+<HARD-GATE>
+STOP. You are about to complete the plan. DO NOT call EnterPlanMode or ExitPlanMode. You MUST call AskUserQuestion below. Both are FORBIDDEN — EnterPlanMode traps the session, ExitPlanMode skips the user's execution choice.
+</HARD-GATE>
 
-**Announce**: "Plan complete and saved to `3-PLAN.md`. Ready to execute?
+Your ONLY permitted next action is calling `AskUserQuestion` with this EXACT structure:
 
-If yes:
+```yaml
+AskUserQuestion:
+  question: "Plan complete and saved to `3-PLAN.md`. How would you like to execute it?"
+  header: "Execution"
+  options:
+    - label: "Subagent-Driven (this session)"
+      description: "I dispatch fresh subagent per task, review between tasks, fast iteration"
+    - label: "Parallel Session (separate)"
+      description: "Open new session in worktree with executing-plans, batch execution with checkpoints"
+```
+
+**If you are about to call ExitPlanMode, STOP — call AskUserQuestion instead.**
+
+**If Subagent-Driven chosen:**
 - **REQUIRED SUB-SKILL:** Use superpowers:subagent-driven-development
 - Stay in this session
 - Fresh subagent per task + code review
+
+**If Parallel Session chosen:**
+- Guide them to open new session in worktree
+- **REQUIRED SUB-SKILL:** New session uses superpowers:executing-plans
+
+---
+
+## Native Task Integration Reference
+
+Use Claude Code's native task tools (v2.1.16+) to create structured tasks alongside the plan document.
+
+### Creating Native Tasks
+
+For each task in the plan, create a corresponding native task:
+
+```yaml
+TaskCreate:
+  subject: "Task N: [Component Name]"
+  description: |
+    [Copy the full task content from the plan you just wrote — files, steps, acceptance criteria, everything]
+  activeForm: "Implementing [Component Name]"
+```
+
+### Setting Dependencies
+
+After all tasks created, set blockedBy relationships:
+
+```yaml
+TaskUpdate:
+  taskId: [task-id]
+  addBlockedBy: [prerequisite-task-ids]
+```
+
+### During Execution
+
+Update task status as work progresses:
+
+```yaml
+TaskUpdate:
+  taskId: [task-id]
+  status: in_progress  # when starting
+
+TaskUpdate:
+  taskId: [task-id]
+  status: completed    # when done
+```
+
+### Notes
+
+- Native tasks provide CLI-visible progress tracking
+- Plan document remains the permanent record
+
+---
+
+## Task Persistence
+
+At plan completion, write the task persistence file **in the same directory as the plan document**.
+
+If the plan is saved to `3-PLAN.md`, the tasks file MUST be saved to `3-PLAN.md.tasks.json`.
+
+```json
+{
+  "planPath": "3-PLAN.md",
+  "tasks": [
+    {"id": 0, "subject": "Task 0: ...", "status": "pending"},
+    {"id": 1, "subject": "Task 1: ...", "status": "pending", "blockedBy": [0]}
+  ],
+  "lastUpdated": "<timestamp>"
+}
+```
+
+### Resuming Work
+
+Any new session can resume by running:
+```
+/superpowers:executing-plans <plan-path>
+```
+
+The skill reads the `.tasks.json` file and continues from where it left off.
