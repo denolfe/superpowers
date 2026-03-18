@@ -81,11 +81,12 @@ digraph brainstorming {
 - Ask after each section whether it looks right so far
 - Cover: architecture, components, data flow, error handling, testing
 - Be ready to go back and clarify if something doesn't make sense
+- Only move on to the next section if I respond in the affirmative. Otherwise, clarify and adjust the current section until it looks right.
 
 ## After the Design
 
 **Documentation:**
-- Write to `2-DESIGN.md` in the current task folder (e.g., `~/.claude/plans/{YYYY-MM-DD}_{project}_{task}/`)
+- Write to `2-DESIGN.md` in the current task folder (e.g., `~/.claude/plans/{YYYY-MM-DD}_{project}_{task}/`). Clearly state "Design file written to `<absolute-path>/2-DESIGN.md`" when done.
 - If `2-DESIGN.md` exists: augment existing content if coherent with new design, else append as a dated section
 - Append clarifying questions log to end of file:
   ```markdown
