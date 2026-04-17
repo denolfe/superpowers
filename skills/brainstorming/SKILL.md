@@ -72,12 +72,13 @@ digraph brainstorming {
 **Exploring approaches:**
 - Propose 2-3 different approaches with trade-offs
 - Present options conversationally with your recommendation and reasoning
+- Label each approach as 💡 Option A, 💡 Option B, etc.
 - Lead with your recommended option and explain why
 
 **Presenting the design:**
 - Once you believe you understand what you're building, present the design
 - Scale each section to its complexity: a few sentences if straightforward, up to 200-300 words if nuanced
-- When presenting design sections, state how many total sections there are (e.g., "Section 2/5")
+- When presenting design sections, state how many total sections there are (e.g., "📌 Section 2/5")
 - Ask after each section whether it looks right so far
 - Cover: architecture, components, data flow, error handling, testing
 - Be ready to go back and clarify if something doesn't make sense
@@ -85,7 +86,7 @@ digraph brainstorming {
 
 <HARD-GATE>
 STOP. After presenting EACH section, you MUST call AskUserQuestion before presenting the next section or writing the design doc. No exceptions — not for simple designs, not for one-file changes, not for changes already discussed interactively.
-  question: "Section [N/Total]: Does this look right?"
+  question: "📌 Section [N/Total]: Does this look right?"
   options:
     - label: "Yes, continue to next section"
     - label: "No, let's revise this section"
