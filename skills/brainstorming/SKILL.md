@@ -101,8 +101,17 @@ digraph brainstorming {
   ```
 - Do NOT commit if plan folder is outside project repository
 
+<HARD-GATE>
+STOP. Design is written. DO NOT invoke writing-plans or any other skill yet.
+You MUST call AskUserQuestion:
+  question: "Design doc written to `2-DESIGN.md`. Ready to move to implementation planning?"
+  options:
+    - label: "Yes, create implementation plan"
+    - label: "No, revise design first"
+Before calling AskUserQuestion, do NOT call EnterPlanMode, invoke any skill, or take any action.
+</HARD-GATE>
+
 **Implementation (if continuing):**
-- Ask: "Ready to set up for implementation?"
 - Use superpowers:using-git-worktrees to create isolated workspace
 - Use superpowers:writing-plans to create detailed implementation plan
 
