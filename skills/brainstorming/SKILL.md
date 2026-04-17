@@ -83,6 +83,15 @@ digraph brainstorming {
 - Be ready to go back and clarify if something doesn't make sense
 - Only move on to the next section if I respond in the affirmative. Otherwise, clarify and adjust the current section until it looks right.
 
+<HARD-GATE>
+STOP. After presenting EACH section, you MUST call AskUserQuestion before presenting the next section or writing the design doc. No exceptions — not for simple designs, not for one-file changes, not for changes already discussed interactively.
+  question: "Section [N/Total]: Does this look right?"
+  options:
+    - label: "Yes, continue to next section"
+    - label: "No, let's revise this section"
+This gate fires after EVERY section. Skipping it for any reason is a violation.
+</HARD-GATE>
+
 ## After the Design
 
 **Documentation:**
