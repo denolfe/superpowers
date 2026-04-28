@@ -11,6 +11,10 @@ Start by understanding the current project context, then ask questions one at a 
 
 <HARD-GATE>
 Do NOT invoke any implementation skill, write any code, scaffold any project, or take any implementation action until you have presented a design and the user has approved it. This applies to EVERY project regardless of perceived simplicity.
+
+**Auto mode does NOT waive this gate.** Auto mode reduces clarifying questions on routine decisions; presenting a design and awaiting approval is not a routine decision. If you are in auto mode and reach this gate, you still stop and ask.
+
+**Before the first Write/Edit/implementation-skill call that follows brainstorming, you MUST state in plain text: `Design approved by user in message: "[exact quoted text from user]"`.** If you cannot produce a direct quote of the user approving the whole design (not a section, not a refinement, not inferred agreement), you have not been approved — return to the approval step.
 </HARD-GATE>
 
 **You MUST NOT call `EnterPlanMode` or `ExitPlanMode` during this skill.** This skill operates in normal mode. Plan mode restricts Write/Edit tools and has no clean exit. Use the writing-plans skill for structured planning instead.
@@ -18,6 +22,24 @@ Do NOT invoke any implementation skill, write any code, scaffold any project, or
 ## Anti-Pattern: "This Is Too Simple To Need A Design"
 
 Every project goes through this process. A todo list, a single-function utility, a config change — all of them. "Simple" projects are where unexamined assumptions cause the most wasted work. The design can be short (a few sentences for truly simple projects), but you MUST present it and get approval.
+
+## Rationalizations That Defeat This Gate
+
+These are the specific thoughts that precede skipping approval. Each one is wrong:
+
+| Thought | Reality |
+|---------|---------|
+| "The user's latest message sounds like agreement" | Not approval. Approval is an explicit yes to the posted whole design. |
+| "I already have section-level approval" | Section approval ≠ whole-design approval. The post-doc gate still fires. |
+| "Re-presenting options with a new constraint — they chose one" | Still brainstorming. A design refinement is not approval of the refined design. |
+| "I proposed this earlier and they liked it" | Each revision requires fresh approval of the current version. |
+| "The design is tiny / one-line / obvious" | Gate still applies. Size does not waive it. |
+| "Auto mode means skip the question" | Wrong. See the HARD-GATE above. |
+| "It's already half-written, asking now is awkward" | Stop and use the recovery protocol below. |
+
+## Post-Violation Recovery
+
+If you realize mid-implementation that you never got explicit whole-design approval: **STOP immediately. Revert the edits. Return to the approval step.** Do NOT ask "is this okay?" retroactively — the edits must not exist when you ask. The social pressure to preserve already-done work is the exact drift that causes the violation to stick.
 
 ## Checklist
 
@@ -83,6 +105,7 @@ digraph brainstorming {
 
 - Propose 2-3 different approaches with trade-offs
 - Present options conversationally with your recommendation and reasoning
+- Label each approach as 💡 Option A, 💡 Option B, etc.
 - Lead with your recommended option and explain why
 
 **Presenting the design:**
@@ -92,6 +115,15 @@ digraph brainstorming {
 - Ask after each section whether it looks right so far
 - Cover: architecture, components, data flow, error handling, testing
 - Be ready to go back and clarify if something doesn't make sense
+
+<HARD-GATE>
+STOP. After presenting EACH section, you MUST call AskUserQuestion before presenting the next section or writing the design doc. No exceptions — not for simple designs, not for one-file changes, not for changes already discussed interactively.
+  question: "📌 Section [N/Total]: Does this look right?"
+  options:
+    - label: "Yes, continue to next section"
+    - label: "No, let's revise this section"
+This gate fires after EVERY section. Skipping it for any reason is a violation.
+</HARD-GATE>
 
 **Design for isolation and clarity:**
 
@@ -131,6 +163,16 @@ After the spec review loop passes, ask the user to review the written spec befor
 > "Spec written and committed to `<path>`. Please review it and let me know if you want to make any changes before we start writing out the implementation plan."
 
 Wait for the user's response. If they request changes, make them and re-run the spec review loop. Only proceed once the user approves.
+
+<HARD-GATE>
+STOP. Design is written. DO NOT invoke writing-plans or any other skill yet.
+You MUST call AskUserQuestion:
+  question: "Design doc written. Ready to move to implementation planning?"
+  options:
+    - label: "Yes, create implementation plan"
+    - label: "No, revise design first"
+Before calling AskUserQuestion, do NOT call EnterPlanMode, invoke any skill, or take any action.
+</HARD-GATE>
 
 **Implementation:**
 
