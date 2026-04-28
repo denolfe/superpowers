@@ -19,7 +19,7 @@ Assume they are a skilled developer, but know almost nothing about our toolset o
 
 **Context:** This should be run in a dedicated worktree (created by brainstorming skill).
 
-**Save plans to:** `docs/superpowers/plans/YYYY-MM-DD-<feature-name>.md`
+**Save plans to:** `3-PLAN.md` in the current task folder (read context from `2-DESIGN.md` in same folder, e.g. `~/.claude/plans/{YYYY-MM-DD}_{project}_{task}/`)
 - (User preferences for plan location override this default)
 
 ## Scope Check
@@ -173,7 +173,7 @@ Your ONLY permitted next action is calling `AskUserQuestion` with this EXACT str
 
 ```yaml
 AskUserQuestion:
-  question: "Plan complete and saved to docs/superpowers/plans/<filename>.md. How would you like to execute it?"
+  question: "Plan complete and saved to `3-PLAN.md`. How would you like to execute it?"
   header: "Execution"
   options:
     - label: "Subagent-Driven (this session)"
@@ -269,11 +269,11 @@ TaskUpdate:
 
 At plan completion, write the task persistence file **in the same directory as the plan document**.
 
-If the plan is saved to `docs/superpowers/plans/2026-01-15-feature.md`, the tasks file MUST be saved to `docs/superpowers/plans/2026-01-15-feature.md.tasks.json`.
+If the plan is saved to `3-PLAN.md`, the tasks file MUST be saved to `3-PLAN.md.tasks.json` in the same task folder.
 
 ```json
 {
-  "planPath": "docs/superpowers/plans/2026-01-15-feature.md",
+  "planPath": "3-PLAN.md",
   "tasks": [
     {
       "id": 0,
@@ -293,7 +293,7 @@ If the plan is saved to `docs/superpowers/plans/2026-01-15-feature.md`, the task
 }
 ```
 
-Both the plan `.md` and `.tasks.json` must be co-located in `docs/superpowers/plans/`.
+Both the plan `.md` and `.tasks.json` must be co-located in the current task folder.
 
 ### Resuming Work
 
