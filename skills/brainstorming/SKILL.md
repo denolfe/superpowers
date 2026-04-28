@@ -167,7 +167,7 @@ Wait for the user's response. If they request changes, make them and re-run the 
 <HARD-GATE>
 STOP. Design is written. DO NOT invoke writing-plans or any other skill yet.
 You MUST call AskUserQuestion:
-  question: "Design doc written. Ready to move to implementation planning?"
+  question: "Design doc written to `2-DESIGN.md`. Ready to move to implementation planning?"
   options:
     - label: "Yes, create implementation plan"
     - label: "No, revise design first"
