@@ -100,6 +100,7 @@ digraph brainstorming {
 - Prefer multiple choice questions when possible, but open-ended is fine too
 - Only one question per message - if a topic needs more exploration, break it into multiple questions
 - Focus on understanding: purpose, constraints, success criteria
+- Do not ask questions that could be answered by reading the codebase. When a question requires codebase context: pause and announce "Let me investigate [specific area]...", spawn a targeted Explore agent for that area, and incorporate findings into the conversation before continuing.
 
 **Exploring approaches:**
 
@@ -115,6 +116,7 @@ digraph brainstorming {
 - Ask after each section whether it looks right so far
 - Cover: architecture, components, data flow, error handling, testing
 - Be ready to go back and clarify if something doesn't make sense
+- Only move on to the next section if the user responds in the affirmative. Otherwise, clarify and adjust the current section until it looks right.
 
 <HARD-GATE>
 STOP. After presenting EACH section, you MUST call AskUserQuestion before presenting the next section or writing the design doc. No exceptions — not for simple designs, not for one-file changes, not for changes already discussed interactively.
@@ -144,8 +146,20 @@ This gate fires after EVERY section. Skipping it for any reason is a violation.
 
 - Write the validated design (spec) to `2-DESIGN.md` in the current task folder (e.g., `~/.claude/plans/{YYYY-MM-DD}_{project}_{task}/`). Clearly state "Design file written to `<absolute-path>/2-DESIGN.md`" when done.
   - (User preferences for spec location override this default)
+- If `2-DESIGN.md` already exists: augment existing content if coherent with the new design, otherwise append the new design as a dated section
+- Append a clarifying-questions log to the end of the file:
+  ```markdown
+  ## Clarifying Questions Asked During Brainstorming
+
+  1. **Q: [Question text]?**
+     **A:** [User's answer or "No answer provided."]
+
+     Other Options Considered:
+     - [Option 1]
+     - [Option 2]
+  ```
 - Use elements-of-style:writing-clearly-and-concisely skill if available
-- Commit the design document to git
+- Commit the design document to git. Do NOT commit if the plan folder is outside the project repository.
 
 **Spec Self-Review:**
 After writing the spec document, look at it with fresh eyes:
