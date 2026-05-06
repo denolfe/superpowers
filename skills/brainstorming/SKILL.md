@@ -36,6 +36,8 @@ These are the specific thoughts that precede skipping approval. Each one is wron
 | "The design is tiny / one-line / obvious" | Gate still applies. Size does not waive it. |
 | "Auto mode means skip the question" | Wrong. See the HARD-GATE above. |
 | "It's already half-written, asking now is awkward" | Stop and use the recovery protocol below. |
+| "User accepted with tweaks — that's basically yes" | Tweaks = revision request, not approval. Apply tweaks, re-present the revised section, AskUserQuestion again. |
+| "They asked clarifying questions about the section, I answered, that means it's settled" | Q&A is not approval. After answering, re-present the (possibly revised) section and fire the gate again. |
 
 ## Post-Violation Recovery
 
@@ -77,9 +79,12 @@ digraph brainstorming {
     "Offer Visual Companion\n(own message, no other content)" -> "Ask clarifying questions";
     "Ask clarifying questions" -> "Propose 2-3 approaches";
     "Propose 2-3 approaches" -> "Present design sections";
-    "Present design sections" -> "User approves design?";
+    "Present design sections" -> "User response type?";
+    "User response type?" [shape=diamond];
+    "User response type?" -> "Present design sections" [label="tweak/revision/question — re-present revised version"];
+    "User response type?" -> "User approves design?" [label="explicit approval"];
     "User approves design?" -> "Present design sections" [label="no, revise"];
-    "User approves design?" -> "Write design doc" [label="yes"];
+    "User approves design?" -> "Write design doc" [label="yes (with quoted approval)"];
     "Write design doc" -> "Spec self-review\n(fix inline)";
     "Spec self-review\n(fix inline)" -> "User reviews spec?";
     "User reviews spec?" -> "Write design doc" [label="changes requested"];
@@ -125,6 +130,18 @@ STOP. After presenting EACH section, you MUST call AskUserQuestion before presen
     - label: "Yes, continue to next section"
     - label: "No, let's revise this section"
 This gate fires after EVERY section. Skipping it for any reason is a violation.
+
+**Revisions re-fire the gate.** After incorporating any user revision, tweak, correction, or clarification, the section is considered re-presented and the gate fires again. You may NOT proceed to the next section or write the doc based on pre-revision approval. The revised section needs its own AskUserQuestion call before moving on.
+
+**Forbidden phrases without immediately-preceding approval.** You MUST NOT emit any of the following phrases unless the SAME turn (or the immediately-preceding user turn) contains an explicit approval to the AskUserQuestion gate for this section:
+- "Section N locked" / "Section N approved" / "Section N done"
+- "Moving on" / "Moving to the next section" / "Proceeding"
+- "Writing the doc now" / "Writing the design now"
+- "Great, with that settled" / "With that locked in"
+
+If you catch yourself about to emit one of these phrases, STOP. Check: did the user respond with explicit approval to the most recent gate? If they responded with tweaks, questions, or anything other than affirmation, you have NOT been approved.
+
+**Approval quote required in transitions.** Before any text declaring a section "approved", "locked", "settled", or "done", you MUST state in plain text on its own line: `Section N approved by user in message: "<exact quoted text>"`. If you cannot produce a direct quote of unambiguous approval (not a tweak, not a question, not inferred), you have not been approved — re-present and re-gate.
 </HARD-GATE>
 
 **Design for isolation and clarity:**
