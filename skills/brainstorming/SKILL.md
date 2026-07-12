@@ -124,12 +124,11 @@ digraph brainstorming {
 - Only move on to the next section if the user responds in the affirmative. Otherwise, clarify and adjust the current section until it looks right.
 
 <HARD-GATE>
-STOP. After presenting EACH section, you MUST call AskUserQuestion before presenting the next section or writing the design doc. No exceptions — not for simple designs, not for one-file changes, not for changes already discussed interactively.
-  question: "📌 Section [N/Total]: Does this look right?"
-  options:
-    - label: "Yes, continue to next section"
-    - label: "No, let's revise this section"
-This gate fires after EVERY section. Skipping it for any reason is a violation.
+STOP. After presenting EACH section, you MUST get explicit user approval before presenting the next section or writing the design doc. No exceptions — not for simple designs, not for one-file changes, not for changes already discussed interactively.
+
+**Present the section as normal chat text, then ask for approval** — for example: `📌 Section [N/Total]: Does this look right, or should we revise?` The section and the approval question must stay visible together in the transcript.
+
+This gate fires after EVERY section. Proceeding on anything short of explicit approval is a violation.
 
 **Revisions re-fire the gate.** After incorporating any user revision, tweak, correction, or clarification, the section is considered re-presented and the gate fires again. You may NOT proceed to the next section or write the doc based on pre-revision approval. The revised section needs its own AskUserQuestion call before moving on.
 
