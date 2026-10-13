@@ -87,7 +87,8 @@ or the web. Say what you'd look for. They decide whether you go.
 **Think wide privately.** Before you propose anything, come up with
 several ideas and drop the weak ones, including any that fight what
 they've told you about why. Show the comparison only when it helps them
-decide.
+decide. When you show it, label each approach 💡 Option A, 💡 Option B,
+and so on.
 
 **Show, don't tell.** Offer the visual companion (below) whenever seeing
 would help more than reading:
@@ -188,9 +189,21 @@ and the gate goes with it. A spike they said yes to may be built; it
 stays labeled throwaway, and keeping what it produced is a new request
 that comes back through this gate.
 
+**Auto mode does not waive this gate.** Auto mode cuts questions on
+routine decisions; approving what gets built is not a routine decision.
+
+Before the first build action this gate covers, state in plain text:
+`Design approved by user in message: "<exact quoted text>"`. If you
+cannot quote your human partner approving the full description (not a
+part, not a refinement, not inferred agreement), you are not approved.
+
 After a project's document is approved, the next step is the plan. For
 software, invoke superpowers:writing-plans and no other skill.
 </HARD-GATE>
+
+**If you find you built without approval:** stop, revert the edits, and
+return to the gate. Don't ask "is this okay?" about work that already
+exists; the pressure to keep done work is what makes the violation stick.
 
 ## Red Flags
 
@@ -201,6 +214,8 @@ software, invoke superpowers:writing-plans and no other skill.
 | "I should explain the process first" | Ask your question. The process shows itself. |
 | "They said 'sounds good' to the idea" | Approval covers what you showed them. A description you haven't written isn't approved. |
 | "The spike works, I'll keep building on it" | Keeping it is a new request. Back through the gate. |
+| "Auto mode means skip the approval" | Auto mode does not waive the gate. Stop and ask. |
+| "It's already half-built, asking now is awkward" | Revert, then ask. Approval comes before the work exists. |
 
 ## Visual Companion
 
