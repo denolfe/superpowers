@@ -154,9 +154,28 @@ could plan from without going back to your human partner. Cover:
 - the parts of the how they decided, as they decided them
 - what's left to the builder
 
-**Where it goes:** in a software repo,
-`docs/superpowers/specs/YYYY-MM-DD-<topic>-design.md`, committed.
-Otherwise, ask. Your human partner's preferences override both.
+**Where it goes:** `2-DESIGN.md` in the current task folder (e.g.
+`~/.claude/plans/{YYYY-MM-DD}_{project}_{task}/`). Say "Design file
+written to `<absolute-path>/2-DESIGN.md`" when done. Commit it only if
+the task folder is inside the project repo. Your human partner's
+preferences override this.
+
+If `2-DESIGN.md` already exists: augment the existing content if it is
+coherent with the new design, otherwise append the new design as a dated
+section.
+
+End the document with a log of the questions you asked:
+
+```markdown
+## Clarifying Questions Asked During Brainstorming
+
+1. **Q: [Question text]?**
+   **A:** [User's answer or "No answer provided."]
+
+   Other Options Considered:
+   - [Option 1]
+   - [Option 2]
+```
 
 **Builder check:** dispatch a fresh subagent with
 `builder-check-prompt.md` in this directory. When you tell your human
